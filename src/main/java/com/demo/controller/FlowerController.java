@@ -1,5 +1,6 @@
 package com.demo.controller;
 
+import com.demo.entity.Flower;
 import com.demo.model.FlowerDto;
 import com.demo.service.FlowerService;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,18 @@ public class FlowerController {
     public ResponseEntity<Void> deleteFlower(@PathVariable Long id) {
         flowerService.deleteFlower(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/purchase")
+    public ResponseEntity<Flower> purchaseFlower(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "1") int quantity) {
+
+        if (quantity <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Flower purchasedFlower = flowerService.purchaseFlower(id, quantity);
+        return ResponseEntity.ok(purchasedFlower);
     }
 }

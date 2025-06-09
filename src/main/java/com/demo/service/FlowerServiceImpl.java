@@ -28,6 +28,32 @@ public class FlowerServiceImpl implements FlowerService {
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    @Transactional
+    public Flower purchaseFlower(Long flowerId, int quantityToPurchase) {
+        Flower flower = flowerRepository.findById(flowerId)
+                .orElseThrow(() -> new IllegalArgumentException("Flower not found with id: " + flowerId));
+
+        if (flower.isArchived()) {
+            throw new IllegalStateException("Cannot purchase archived flower");
+        }
+
+        if (flower.getQuantity() < quantityToPurchase) {
+            throw new IllegalStateException("Not enough quantity available. Available: " + flower.getQuantity());
+        }
+
+        int newQuantity = flower.getQuantity() - quantityToPurchase;
+        flower.setQuantity(newQuantity);
+
+        if(flower.getQuantity()==0){
+            flower.setStatus(Flower.FlowerStatus.SOLD);
+        }
+
+        return flowerRepository.save(flower);
+    }
+
+
     @Override
     @Transactional
     public FlowerDto addFlower(FlowerDto dto) {

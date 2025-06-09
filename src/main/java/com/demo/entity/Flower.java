@@ -30,11 +30,8 @@ public class Flower {
     private Boolean archived = false;
 
     public enum FlowerStatus {
-        RESERVED,
         PREPARED,
-        DELIVERY,
-        SOLD,
-        RETURNED
+        SOLD
     }
 
     public Flower() {

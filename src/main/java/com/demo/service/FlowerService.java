@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import com.demo.entity.Flower;
 import com.demo.model.FlowerDto;
 import java.util.List;
 
@@ -9,4 +10,5 @@ public interface FlowerService {
     void archiveFlower(Long id);
     void activateFlower(Long id);
     void deleteFlower(Long id);
+    Flower purchaseFlower(Long flowerId, int quantityToPurchase);
 }
